@@ -14,11 +14,16 @@ namespace gestaoDeEquipamentos.ConsoleApp
         static string[] tituloDeChamados  = new string[1000];
         static string[] dataAberturaChamados = new string[1000];
         static string[] descricaoDeChamados = new string[1000];
+        static string[] nomeUsuarios = new string[1000];
+        static string[] emailUsuarios = new string[1000];
+        static string[] telefoneUsuarios = new string[1000];
+
 
 
 
         static int contadorEquipamentos = 0;
         static int contadorChamados = 0;
+        static int contadorUsuarios = 0;
 
         //método do primeiro menu
         static void Main(string[] args)
@@ -31,12 +36,13 @@ namespace gestaoDeEquipamentos.ConsoleApp
         {
             string opcao = "0";
 
-            while (opcao != "3")
+            while (opcao != "4")
             {
                 Console.Write("Digite a opção desejada:\n" +
                     "1 para o menu de equipamentos.\n" +
                     "2 para o menu de manutenção.\n" +
-                    "3 para sair.\n");
+                    "3 para o menu de solicitantes.\n" +
+                    "4 para sair.");
                 opcao = Console.ReadLine();
 
                 if (opcao == "1")
@@ -48,6 +54,10 @@ namespace gestaoDeEquipamentos.ConsoleApp
                     chamados();
                 }
                 else if (opcao == "3")
+                {
+                    responsaveis();
+                }
+                else if (opcao == "4")
                 {
                     break;
                 }
@@ -346,7 +356,139 @@ namespace gestaoDeEquipamentos.ConsoleApp
 
         }
 
+        //métodos para os responsáveis.
 
+        static void responsaveis()
+        {
+            Console.Clear();
+            Console.Write("Digite a opção desejada.\n" +
+                "1 para cadastrar novo responsável.\n" +
+                "2 para visualizar a lista de responsáveis pela manutenção.\n" +
+                "3 para editar os dados de um responsável pela manutenção cadastrado.\n");
+            string opcao = Console.ReadLine();
+
+            switch (opcao)
+            {
+                case "1":
+                    cadastrarResponsavel();
+                    break;
+
+                case "2":
+                    visualizarListadeResponsaveis();
+                    break;
+
+                case "3":
+                    editarResponsavel();
+                    break;
+
+                case "4":
+                    Console.Clear();
+                    menuPrincipal();
+                    break;
+            }
+
+        }
+
+        static void cadastrarResponsavel()
+        {
+            Console.WriteLine("Digite o nome do novo usuário:");
+            string nomeDeUsuario = Console.ReadLine();
+            nomeUsuarios[contadorUsuarios] = nomeDeUsuario;
+
+            Console.WriteLine("Digite o e-mail do usuário " + nomeDeUsuario + ".");
+            string emailDoUsuario = Console.ReadLine();
+            emailUsuarios[contadorUsuarios] = emailDoUsuario;
+
+            Console.WriteLine("Digite o número de telefone do usuário " + nomeDeUsuario + ".");
+            string telefoneDoUsuario = Console.ReadLine();
+            telefoneUsuarios[contadorUsuarios] = telefoneDoUsuario;
+
+            Console.Clear();
+
+            responsaveis();
+                    
+        }
+
+        static void visualizarListadeResponsaveis()
+        {
+            for (int i = 0; i < contadorUsuarios; i++)
+            {
+                Console.WriteLine(nomeUsuarios[i] + " " + emailUsuarios[i] + " "
+                    + telefoneUsuarios[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Pressione qualquer tecla para continuar.");
+            Console.ReadKey();
+            Console.Clear();
+            chamados();
+        }
+
+        static void editarResponsavel()
+        {
+            Console.Clear();
+            Console.WriteLine("Digite o nome do usuário que você deseja editar:");
+            string usuarioParaEditar = Console.ReadLine();
+
+            for (int i = 0; i < contadorUsuarios; i++)
+            {
+                if (usuarioParaEditar == nomeUsuarios[i])
+                {
+                    Console.WriteLine(nomeUsuarios[i] + " " + emailUsuarios[i] + " "
+                        + telefoneUsuarios[i]);
+                    Console.WriteLine();
+                    while (true)
+                    {
+                        Console.Write("O que você deseja editar?\n" +
+                                      "1 para nome.\n" +
+                                      "2 para e-mail.\n" +
+                                      "3 para telefone.\n");
+                        int itemParaEditar = Convert.ToInt16(Console.ReadLine());
+
+                        switch (itemParaEditar)
+                        {
+                            case 1:
+                                Console.WriteLine("Digite o novo nome:");
+                                string nomeNovo = Console.ReadLine();
+                                nomeUsuarios[i] = nomeNovo;
+                                break;
+                            case 2:
+                                Console.WriteLine("Digite o novo e-mail.");
+                                string emailNovo = Console.ReadLine();
+                                emailUsuarios[i] = emailNovo;
+                                break;
+                            case 3:
+                                Console.WriteLine("Digite o novo telefone:");
+                                string telefoneNovo = Console.ReadLine();
+                                telefoneUsuarios[i] = telefoneNovo;
+                                break;
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("Digite 1 para fazer uma nova edição neste usuário.");
+                        Console.WriteLine("Digite 2 para editar outro usuário.");
+                        Console.WriteLine("Digite 3 para voltar ao menu principal.");
+                        int opcaoMenuFinalEdicao = Convert.ToInt16(Console.ReadLine());
+
+
+                        if (opcaoMenuFinalEdicao == 1)
+                            continue;
+
+                        else if (opcaoMenuFinalEdicao == 2)
+                        {
+                            editarResponsavel();
+                            break;
+                        }
+
+                        else if (opcaoMenuFinalEdicao == 3)
+                        {
+                            menuPrincipal();
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
     }
 }
 
